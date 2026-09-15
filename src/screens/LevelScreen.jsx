@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import bgImg from '../assets/bg-img.png';
-import logoBlackVertical from '../assets/logo_black_vertical.png';
+import logoBlackVertical from '../assets/nebuloid-logo.png';
 import { STAGE_CONFIG, STAGES_PER_LEVEL } from '../data/stageConfig';
 
 export default function LevelScreen({
@@ -117,10 +117,6 @@ export default function LevelScreen({
             alt="Nebuloid"
             className="h-7 sm:h-8 w-auto object-contain pointer-events-none"
           />
-          <div className="hidden sm:flex flex-col text-left leading-tight pr-1">
-            <span className="text-[10px] font-black tracking-widest text-black uppercase">NEBULOID</span>
-            <span className="text-[8px] font-bold tracking-wider text-neutral-600 uppercase">GAMES</span>
-          </div>
         </div>
 
         {/* Empty spacer / status to keep top bar symmetrically balanced */}

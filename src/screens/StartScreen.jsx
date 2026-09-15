@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import bgImg from '../assets/bg-img.png';
 import startBtnImg from '../assets/start.png';
-import logoBlackVertical from '../assets/logo_black_vertical.png';
+import logoBlackVertical from '../assets/nebuloid-logo.png';
 import { DIFFICULTY_CONFIG } from '../data/colors';
+import { getStoredCertificates, downloadCertificatePNG } from '../utils/gameUtils';
 
 export default function StartScreen({
   onStartGame,
@@ -15,6 +16,8 @@ export default function StartScreen({
   onToggleMute
 }) {
   const [activeModal, setActiveModal] = useState(null); // 'certificates' | 'howToPlay' | 'exit' | null
+  const [certTab, setCertTab] = useState('earned'); // 'earned' | 'milestones'
+  const savedCertificates = getStoredCertificates();
 
   const handleStart = () => {
     if (onOpenLevels) {
@@ -42,12 +45,8 @@ export default function StartScreen({
         <img
           src={logoBlackVertical}
           alt="Nebuloid"
-          className="h-7 sm:h-8 w-auto object-contain pointer-events-none"
+          className="h-10 w-auto object-contain pointer-events-none"
         />
-        <div className="hidden sm:flex flex-col text-left leading-tight pr-1">
-          <span className="text-[10px] font-black tracking-widest text-black uppercase">NEBULOID</span>
-          <span className="text-[8px] font-bold tracking-wider text-neutral-600 uppercase">GAMES</span>
-        </div>
       </div>
 
       {/* ================= TOP-RIGHT: SOUND TOGGLE ================= */}
@@ -98,25 +97,6 @@ export default function StartScreen({
         {/* Bottom 3 Pill Action Buttons */}
         <div className="w-full flex flex-wrap items-center justify-center gap-3 sm:gap-5 mt-2 sm:mt-4">
           {/* Button 1: Certificates */}
-          <button
-            onClick={() => setActiveModal('certificates')}
-            className="flex items-center gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-[#173a87] via-[#15347d] to-[#122e6b] hover:from-[#1e48a5] hover:to-[#17387e] border border-blue-400/40 text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg shadow-blue-950/40 hover:shadow-blue-500/25 transition-all duration-150 hover:scale-105 active:scale-95 cursor-pointer"
-          >
-            {/* Certificate / ID badge icon with star */}
-            <svg
-              className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-none stroke-current"
-              viewBox="0 0 24 24"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="4" width="18" height="16" rx="3" />
-              <line x1="7" y1="9" x2="11" y2="9" />
-              <line x1="7" y1="13" x2="10" y2="13" />
-              <path d="M16 11l.9 1.8 2 .3-1.4 1.4.3 2-1.8-.9-1.8.9.3-2-1.4-1.4 2-.3z" fill="currentColor" />
-            </svg>
-            <span>Certificates</span>
-          </button>
 
           {/* Button 2: How To Play */}
           <button
@@ -130,23 +110,6 @@ export default function StartScreen({
             <span>How To Play</span>
           </button>
 
-          {/* Button 3: Quit To Home */}
-          <button
-            onClick={() => setActiveModal('exit')}
-            className="flex items-center gap-2.5 px-5 sm:px-7 py-2.5 sm:py-3 rounded-full bg-gradient-to-r from-[#173a87] via-[#15347d] to-[#122e6b] hover:from-[#1e48a5] hover:to-[#17387e] border border-blue-400/40 text-white font-bold text-xs sm:text-sm tracking-wide shadow-lg shadow-blue-950/40 hover:shadow-blue-500/25 transition-all duration-150 hover:scale-105 active:scale-95 cursor-pointer"
-          >
-            {/* Home icon */}
-            <svg
-              className="w-4 h-4 sm:w-4.5 sm:h-4.5 fill-none stroke-current"
-              viewBox="0 0 24 24"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M3 10.5L12 3l9 7.5V20a2 2 0 0 1-2 2h-4a1 1 0 0 1-1-1v-5a1 1 0 0 0-1-1h-2a1 1 0 0 0-1 1v5a1 1 0 0 1-1 1H5a2 2 0 0 1-2-2z" />
-            </svg>
-            <span>Quit To Home</span>
-          </button>
         </div>
       </div>
 
@@ -161,12 +124,17 @@ export default function StartScreen({
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-white/15 mb-5">
+            <div className="flex items-center justify-between pb-3 border-b border-white/15 mb-3">
               <div className="flex items-center gap-2.5">
                 <span className="text-2xl">🏆</span>
-                <h3 className="text-lg sm:text-xl font-black text-white tracking-wider uppercase">
-                  Certificates & Targets
-                </h3>
+                <div>
+                  <h3 className="text-base sm:text-lg font-black text-white tracking-wider uppercase">
+                    Certificates & Targets
+                  </h3>
+                  <span className="text-[10px] text-cyan-300 font-bold block">
+                    Official Nebuloid Player Honours
+                  </span>
+                </div>
               </div>
               <button
                 onClick={() => setActiveModal(null)}
@@ -176,65 +144,157 @@ export default function StartScreen({
               </button>
             </div>
 
-            {/* Current Stats Summary */}
-            <div className="grid grid-cols-2 gap-3 mb-5">
-              <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 text-center">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                  Best Score
+            {/* Tab Bar */}
+            <div className="flex gap-2 p-1 bg-black/40 border border-white/10 rounded-2xl mb-4">
+              <button
+                onClick={() => setCertTab('earned')}
+                className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  certTab === 'earned'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <span>🎓 My Certificates</span>
+                <span className="text-[10px] px-1.5 py-0.2 rounded-full bg-white/20 text-white">
+                  {savedCertificates.length}
                 </span>
-                <span className="text-2xl font-black text-amber-400">{bestScore} <span className="text-xs font-semibold text-slate-400">PTS</span></span>
-              </div>
-              <div className="p-3.5 bg-white/5 rounded-2xl border border-white/10 text-center">
-                <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-                  Best Streak
-                </span>
-                <span className="text-2xl font-black text-emerald-400">🔥 {bestStreak}</span>
-              </div>
+              </button>
+              <button
+                onClick={() => setCertTab('milestones')}
+                className={`flex-1 py-1.5 px-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-1.5 ${
+                  certTab === 'milestones'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                <span>🎯 Milestones</span>
+              </button>
             </div>
 
-            {/* Milestone Certificates */}
-            <h4 className="text-xs font-extrabold tracking-widest text-slate-400 uppercase mb-3">
-              Unlockable Certificates
-            </h4>
-            <div className="space-y-2.5 mb-6 max-h-48 overflow-y-auto pr-1">
-              {[
-                { title: 'Bronze Speedster', target: 50, desc: 'Score 50+ points in a single race' },
-                { title: 'Silver Mastermind', target: 150, desc: 'Score 150+ points in a single race' },
-                { title: 'Gold Champion', target: 300, desc: 'Score 300+ points in a single race' },
-                { title: 'Diamond Legend', target: 500, desc: 'Score 500+ points with 95%+ accuracy' },
-              ].map((cert) => {
-                const isUnlocked = bestScore >= cert.target;
-                return (
-                  <div
-                    key={cert.title}
-                    className={`flex items-center justify-between p-3 rounded-2xl border transition-all ${
-                      isUnlocked
-                        ? 'border-amber-400/40 bg-gradient-to-r from-amber-500/15 to-transparent text-white'
-                        : 'border-white/10 bg-white/5 text-slate-400'
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center gap-2">
-                        <span className="font-extrabold text-xs sm:text-sm tracking-wide text-white">
-                          {cert.title}
-                        </span>
-                        {isUnlocked && (
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black uppercase">
-                            UNLOCKED ✓
-                          </span>
-                        )}
-                      </div>
-                      <p className={`text-[11px] mt-0.5 ${isUnlocked ? 'text-slate-300' : 'text-slate-500'}`}>
-                        {cert.desc}
-                      </p>
-                    </div>
-                    <span className={`text-xs font-black shrink-0 ${isUnlocked ? 'text-amber-400' : 'text-slate-500'}`}>
-                      {cert.target} PTS
-                    </span>
+            {/* TAB 1: EARNED CERTIFICATES VAULT */}
+            {certTab === 'earned' && (
+              <div className="space-y-2.5 mb-5 max-h-64 overflow-y-auto pr-1">
+                {savedCertificates.length === 0 ? (
+                  <div className="py-8 px-4 text-center bg-white/5 rounded-2xl border border-white/10">
+                    <span className="text-3xl block mb-2">📜</span>
+                    <h4 className="text-sm font-black text-white uppercase tracking-wider mb-1">
+                      No Certificates Earned Yet
+                    </h4>
+                    <p className="text-xs text-slate-400 max-w-xs mx-auto mb-3">
+                      Win any stage in Easy, Medium, or Hard to automatically generate and unlock your official merit certificate!
+                    </p>
+                    <button
+                      onClick={() => {
+                        setActiveModal(null);
+                        handleStart();
+                      }}
+                      className="py-2 px-5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-black text-xs uppercase tracking-wider shadow-md transition-all cursor-pointer"
+                    >
+                      PLAY NOW ▶
+                    </button>
                   </div>
-                );
-              })}
-            </div>
+                ) : (
+                  savedCertificates.map((cert) => (
+                    <div
+                      key={cert.id}
+                      className="p-3 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-between gap-3 hover:border-cyan-400/40 transition-all"
+                    >
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className="text-sm font-black text-white truncate">
+                            {cert.playerName || 'Champion'}
+                          </span>
+                          <span className="text-[9px] px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 font-black uppercase shrink-0">
+                            Stage 0{cert.stageNumber} ({cert.difficulty})
+                          </span>
+                        </div>
+                        <div className="text-[10px] text-amber-300 font-bold uppercase tracking-wide">
+                          ★ {cert.honorTitle || 'COLOR CLASH CONQUEROR'}
+                        </div>
+                        <div className="text-[10px] text-slate-400 mt-1 flex items-center gap-2">
+                          <span>Score: <b className="text-white">{cert.score}</b></span>
+                          <span>•</span>
+                          <span>Accuracy: <b className="text-emerald-400">{cert.accuracy}%</b></span>
+                          <span>•</span>
+                          <span>{cert.issueDate}</span>
+                        </div>
+                      </div>
+
+                      {/* Download PNG Button */}
+                      <button
+                        onClick={() => downloadCertificatePNG(cert)}
+                        className="py-2 px-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-[11px] uppercase tracking-wider shadow-sm transition-all cursor-pointer shrink-0 flex items-center gap-1"
+                        title="Download Certificate PNG"
+                      >
+                        <span>📥</span>
+                        <span>PNG</span>
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+            )}
+
+            {/* TAB 2: MILESTONES */}
+            {certTab === 'milestones' && (
+              <>
+                {/* Current Stats Summary */}
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className="p-3 bg-white/5 rounded-2xl border border-white/10 text-center">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      Best Score
+                    </span>
+                    <span className="text-xl font-black text-amber-400">{bestScore} <span className="text-xs font-semibold text-slate-400">PTS</span></span>
+                  </div>
+                  <div className="p-3 bg-white/5 rounded-2xl border border-white/10 text-center">
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                      Best Streak
+                    </span>
+                    <span className="text-xl font-black text-emerald-400">🔥 {bestStreak}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2 mb-5 max-h-52 overflow-y-auto pr-1">
+                  {[
+                    { title: 'Bronze Speedster', target: 50, desc: 'Score 50+ points in a single race' },
+                    { title: 'Silver Mastermind', target: 150, desc: 'Score 150+ points in a single race' },
+                    { title: 'Gold Champion', target: 300, desc: 'Score 300+ points in a single race' },
+                    { title: 'Diamond Legend', target: 500, desc: 'Score 500+ points with 95%+ accuracy' },
+                  ].map((cert) => {
+                    const isUnlocked = bestScore >= cert.target;
+                    return (
+                      <div
+                        key={cert.title}
+                        className={`flex items-center justify-between p-2.5 rounded-xl border transition-all ${
+                          isUnlocked
+                            ? 'border-amber-400/40 bg-gradient-to-r from-amber-500/15 to-transparent text-white'
+                            : 'border-white/10 bg-white/5 text-slate-400'
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="font-extrabold text-xs tracking-wide text-white">
+                              {cert.title}
+                            </span>
+                            {isUnlocked && (
+                              <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-black uppercase">
+                                UNLOCKED ✓
+                              </span>
+                            )}
+                          </div>
+                          <p className={`text-[10px] mt-0.5 ${isUnlocked ? 'text-slate-300' : 'text-slate-500'}`}>
+                            {cert.desc}
+                          </p>
+                        </div>
+                        <span className={`text-xs font-black shrink-0 ${isUnlocked ? 'text-amber-400' : 'text-slate-500'}`}>
+                          {cert.target} PTS
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
 
             {/* Difficulty Selector in Modal */}
             {onChangeDifficulty && (

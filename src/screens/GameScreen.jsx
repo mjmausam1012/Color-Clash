@@ -1,6 +1,6 @@
 import React from 'react';
 import bgImg from '../assets/bg-img.png';
-import logoBlackVertical from '../assets/logo_black_vertical.png';
+import logoBlackVertical from '../assets/nebuloid-logo.png';
 import ColorWord from '../components/ColorWord';
 import AnswerOptions from '../components/AnswerOptions';
 import Feedback from '../components/Feedback';
@@ -47,10 +47,6 @@ export default function GameScreen({
             alt="Nebuloid"
             className="h-7 sm:h-8 w-auto object-contain pointer-events-none"
           />
-          <div className="hidden sm:flex flex-col text-left leading-tight pr-1">
-            <span className="text-[10px] font-black tracking-widest text-black uppercase">NEBULOID</span>
-            <span className="text-[8px] font-bold tracking-wider text-neutral-600 uppercase">GAMES</span>
-          </div>
         </div>
       </div>
 

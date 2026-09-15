@@ -57,12 +57,13 @@ export default function FloatingKeyboard({ value, onChange, onEnter }) {
 
   const keyStyle = {
     flex: 1,
-    height: 42,
+    height: 32,
     border: "1px solid rgba(255,255,255,.2)",
-    borderRadius: 8,
+    borderRadius: 6,
     background: "rgba(255,255,255,.12)",
     color: "white",
-    fontWeight: 800,
+    fontWeight: 700,
+    fontSize: 12,
     cursor: "pointer",
   };
 
@@ -76,8 +77,8 @@ export default function FloatingKeyboard({ value, onChange, onEnter }) {
         placeholder="Enter your name"
         style={{
           width: "100%",
-          padding: "16px 20px",
-          borderRadius: 18,
+          padding: "12px 16px",
+          borderRadius: 14,
           border: "2px solid #168df0",
           outline: "none",
         }}
@@ -89,16 +90,16 @@ export default function FloatingKeyboard({ value, onChange, onEnter }) {
           style={{
             position: "fixed",
             zIndex: 9999,
-            width: "min(94vw, 700px)",
+            width: "min(92vw, 420px)",
             left: position ? position.x : "50%",
             top: position ? position.y : "auto",
-            bottom: position ? "auto" : "25px",
+            bottom: position ? "auto" : "16px",
             transform: position ? "none" : "translateX(-50%)",
             background: "#102f72",
             border: "2px solid #25d5ff",
-            borderRadius: 22,
-            padding: 12,
-            boxShadow: "0 20px 60px rgba(0,0,0,.4)",
+            borderRadius: 16,
+            padding: 8,
+            boxShadow: "0 15px 40px rgba(0,0,0,.45)",
           }}
           onPointerMove={drag}
           onPointerUp={stopDrag}
@@ -112,11 +113,12 @@ export default function FloatingKeyboard({ value, onChange, onEnter }) {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
-              padding: "8px 12px",
-              marginBottom: 8,
+              padding: "4px 8px",
+              marginBottom: 6,
               background: "rgba(255,255,255,.1)",
-              borderRadius: 12,
+              borderRadius: 8,
               color: "white",
+              fontSize: 11,
               fontWeight: 800,
               userSelect: "none",
             }}
@@ -126,14 +128,17 @@ export default function FloatingKeyboard({ value, onChange, onEnter }) {
             <button
               onClick={() => setOpen(false)}
               style={{
-                width: 32,
-                height: 32,
+                width: 22,
+                height: 22,
                 border: 0,
                 borderRadius: "50%",
                 background: "rgba(255,255,255,.15)",
                 color: "white",
-                fontSize: 20,
+                fontSize: 14,
                 cursor: "pointer",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
               }}
             >
               ×

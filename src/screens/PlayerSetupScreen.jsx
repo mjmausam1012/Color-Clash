@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import bgImg from '../assets/bg-img.png';
-import logoBlackVertical from '../assets/logo_black_vertical.png';
+import logoBlackVertical from '../assets/nebuloid-logo.png';
 
 export default function PlayerSetupScreen({
   initialName = '',
@@ -139,12 +139,8 @@ export default function PlayerSetupScreen({
           <img
             src={logoBlackVertical}
             alt="Nebuloid"
-            className="h-7 sm:h-8 w-auto object-contain pointer-events-none"
+            className="h-8 w-auto object-contain pointer-events-none"
           />
-          <div className="hidden sm:flex flex-col text-left leading-tight pr-1">
-            <span className="text-[10px] font-black tracking-widest text-black uppercase">NEBULOID</span>
-            <span className="text-[8px] font-bold tracking-wider text-neutral-600 uppercase">GAMES</span>
-          </div>
         </div>
       </div>
 
@@ -254,12 +250,12 @@ export default function PlayerSetupScreen({
       {/* ================= DRAGGABLE & DROPPABLE FLOATING KEYBOARD ================= */}
       {showKeyboard && (
         <div
-          className={`fixed z-50 w-[95%] max-w-xl bg-slate-950/95 backdrop-blur-2xl border-2 border-blue-400/40 rounded-3xl shadow-[0_25px_60px_rgba(0,0,0,0.85)] p-3 sm:p-4 text-white select-none transition-shadow ${
-            isDragging ? 'shadow-[0_30px_80px_rgba(59,130,246,0.6)] ring-2 ring-blue-400' : ''
+          className={`fixed z-50 w-[92%] max-w-[420px] bg-slate-950/95 backdrop-blur-2xl border-2 border-blue-400/40 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] p-2 sm:p-2.5 text-white select-none transition-shadow ${
+            isDragging ? 'shadow-[0_25px_60px_rgba(59,130,246,0.5)] ring-2 ring-blue-400' : ''
           }`}
           style={{
             left: '50%',
-            bottom: '24px',
+            bottom: '16px',
             transform: `translate(calc(-50% + ${keyboardPos.x}px), ${keyboardPos.y}px)`,
             touchAction: 'none'
           }}
@@ -272,23 +268,23 @@ export default function PlayerSetupScreen({
           <div
             onMouseDown={handleDragStart}
             onTouchStart={handleDragStart}
-            className="flex items-center justify-between pb-2 mb-2 border-b border-white/15 px-2 cursor-grab active:cursor-grabbing hover:bg-white/5 rounded-xl transition-colors"
+            className="flex items-center justify-between pb-1.5 mb-1.5 border-b border-white/15 px-1.5 cursor-grab active:cursor-grabbing hover:bg-white/5 rounded-lg transition-colors"
             title="Click and drag to move keyboard anywhere"
           >
-            <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-slate-200">
-              <span className="text-blue-400 text-sm">⋮⋮</span>
+            <div className="flex items-center gap-1.5 text-[11px] font-black uppercase tracking-wider text-slate-200">
+              <span className="text-blue-400 text-xs">⋮⋮</span>
               <span>Floating Keyboard</span>
-              <span className="text-[10px] text-cyan-300 font-bold bg-blue-600/30 border border-blue-400/30 px-2 py-0.5 rounded-full">
-                Drag to Move ✥
+              <span className="text-[9px] text-cyan-300 font-bold bg-blue-600/30 border border-blue-400/30 px-1.5 py-0.5 rounded-full">
+                Drag ✥
               </span>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               {(keyboardPos.x !== 0 || keyboardPos.y !== 0) && (
                 <button
                   type="button"
                   onClick={resetKeyboardPos}
-                  className="text-[10px] font-bold text-slate-300 hover:text-white px-2 py-0.5 rounded bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+                  className="text-[9px] font-bold text-slate-300 hover:text-white px-1.5 py-0.5 rounded bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
                   title="Reset Position"
                 >
                   Reset Pos
@@ -297,14 +293,14 @@ export default function PlayerSetupScreen({
               <button
                 type="button"
                 onClick={handleClear}
-                className="text-[10px] font-bold text-slate-400 hover:text-white px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 transition-colors cursor-pointer"
+                className="text-[9px] font-bold text-slate-400 hover:text-white px-1.5 py-0.5 rounded bg-white/5 hover:bg-white/10 transition-colors cursor-pointer"
               >
                 Clear
               </button>
               <button
                 type="button"
                 onClick={() => setShowKeyboard(false)}
-                className="w-6 h-6 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-xs flex items-center justify-center cursor-pointer transition-colors"
+                className="w-5 h-5 rounded-full bg-white/10 hover:bg-white/20 text-white font-bold text-[10px] flex items-center justify-center cursor-pointer transition-colors"
                 title="Hide Keyboard"
               >
                 ✕
@@ -313,13 +309,13 @@ export default function PlayerSetupScreen({
           </div>
 
           {/* Row 1: Numbers */}
-          <div className="grid grid-cols-10 gap-1 sm:gap-1.5 mb-1.5">
+          <div className="grid grid-cols-10 gap-1 mb-1">
             {numberRow.map((num) => (
               <button
                 key={num}
                 type="button"
                 onClick={() => handleKeyClick(num)}
-                className="h-9 sm:h-10 rounded-lg bg-white/10 hover:bg-white/25 active:bg-blue-600 active:scale-95 text-white font-black text-xs sm:text-sm transition-all flex items-center justify-center border border-white/10 cursor-pointer shadow-xs"
+                className="h-7 sm:h-8 rounded-md bg-white/10 hover:bg-white/25 active:bg-blue-600 active:scale-95 text-white font-black text-xs transition-all flex items-center justify-center border border-white/10 cursor-pointer shadow-xs"
               >
                 {num}
               </button>
@@ -327,13 +323,13 @@ export default function PlayerSetupScreen({
           </div>
 
           {/* Row 2: Q - P */}
-          <div className="grid grid-cols-10 gap-1 sm:gap-1.5 mb-1.5">
+          <div className="grid grid-cols-10 gap-1 mb-1">
             {row1.map((char) => (
               <button
                 key={char}
                 type="button"
                 onClick={() => handleKeyClick(char)}
-                className="h-9 sm:h-10 rounded-lg bg-white/10 hover:bg-white/25 active:bg-blue-600 active:scale-95 text-white font-black text-xs sm:text-sm transition-all flex items-center justify-center border border-white/10 cursor-pointer shadow-xs"
+                className="h-7 sm:h-8 rounded-md bg-white/10 hover:bg-white/25 active:bg-blue-600 active:scale-95 text-white font-black text-xs transition-all flex items-center justify-center border border-white/10 cursor-pointer shadow-xs"
               >
                 {isCaps ? char : char.toLowerCase()}
               </button>
@@ -341,13 +337,13 @@ export default function PlayerSetupScreen({
           </div>
 
           {/* Row 3: A - L */}
-          <div className="grid grid-cols-9 gap-1 sm:gap-1.5 mb-1.5 px-3 sm:px-4">
+          <div className="grid grid-cols-9 gap-1 mb-1 px-2.5 sm:px-3">
             {row2.map((char) => (
               <button
                 key={char}
                 type="button"
                 onClick={() => handleKeyClick(char)}
-                className="h-9 sm:h-10 rounded-lg bg-white/10 hover:bg-white/25 active:bg-blue-600 active:scale-95 text-white font-black text-xs sm:text-sm transition-all flex items-center justify-center border border-white/10 cursor-pointer shadow-xs"
+                className="h-7 sm:h-8 rounded-md bg-white/10 hover:bg-white/25 active:bg-blue-600 active:scale-95 text-white font-black text-xs transition-all flex items-center justify-center border border-white/10 cursor-pointer shadow-xs"
               >
                 {isCaps ? char : char.toLowerCase()}
               </button>
@@ -355,12 +351,12 @@ export default function PlayerSetupScreen({
           </div>
 
           {/* Row 4: CAPS | Z - M | BACKSPACE */}
-          <div className="flex gap-1 sm:gap-1.5 mb-1.5">
+          <div className="flex gap-1 mb-1">
             {/* Caps Lock Toggle */}
             <button
               type="button"
               onClick={() => setIsCaps((prev) => !prev)}
-              className={`w-14 sm:w-16 h-9 sm:h-10 rounded-lg font-black text-[11px] sm:text-xs transition-all flex items-center justify-center border cursor-pointer active:scale-95 ${
+              className={`w-11 sm:w-12 h-7 sm:h-8 rounded-md font-black text-[9px] sm:text-[10px] transition-all flex items-center justify-center border cursor-pointer active:scale-95 ${
                 isCaps
                   ? 'bg-blue-600 text-white border-blue-400 shadow-sm'
                   : 'bg-white/10 hover:bg-white/20 text-slate-300 border-white/10'
@@ -370,13 +366,13 @@ export default function PlayerSetupScreen({
             </button>
 
             {/* Z - M */}
-            <div className="grid grid-cols-7 gap-1 sm:gap-1.5 flex-1">
+            <div className="grid grid-cols-7 gap-1 flex-1">
               {row3.map((char) => (
                 <button
                   key={char}
                   type="button"
                   onClick={() => handleKeyClick(char)}
-                  className="h-9 sm:h-10 rounded-lg bg-white/10 hover:bg-white/25 active:bg-blue-600 active:scale-95 text-white font-black text-xs sm:text-sm transition-all flex items-center justify-center border border-white/10 cursor-pointer shadow-xs"
+                  className="h-7 sm:h-8 rounded-md bg-white/10 hover:bg-white/25 active:bg-blue-600 active:scale-95 text-white font-black text-xs transition-all flex items-center justify-center border border-white/10 cursor-pointer shadow-xs"
                 >
                   {isCaps ? char : char.toLowerCase()}
                 </button>
@@ -387,7 +383,7 @@ export default function PlayerSetupScreen({
             <button
               type="button"
               onClick={handleBackspace}
-              className="w-14 sm:w-16 h-9 sm:h-10 rounded-lg bg-rose-600/80 hover:bg-rose-500 text-white font-black text-xs transition-all flex items-center justify-center border border-rose-400/40 cursor-pointer active:scale-95 shadow-sm"
+              className="w-11 sm:w-12 h-7 sm:h-8 rounded-md bg-rose-600/80 hover:bg-rose-500 text-white font-black text-xs transition-all flex items-center justify-center border border-rose-400/40 cursor-pointer active:scale-95 shadow-sm"
               title="Backspace"
             >
               ⌫
@@ -395,12 +391,12 @@ export default function PlayerSetupScreen({
           </div>
 
           {/* Row 5: SPACE & SUBMIT */}
-          <div className="flex gap-1.5 sm:gap-2 pt-1">
+          <div className="flex gap-1 pt-0.5">
             {/* Space Bar */}
             <button
               type="button"
               onClick={handleSpace}
-              className="flex-1 h-9 sm:h-10 rounded-lg bg-white/10 hover:bg-white/20 active:bg-white/30 text-slate-300 font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center border border-white/10 cursor-pointer active:scale-98 shadow-xs"
+              className="flex-1 h-7 sm:h-8 rounded-md bg-white/10 hover:bg-white/20 active:bg-white/30 text-slate-300 font-bold text-[10px] sm:text-[11px] uppercase tracking-wider transition-all flex items-center justify-center border border-white/10 cursor-pointer active:scale-98 shadow-xs"
             >
               SPACE
             </button>
@@ -409,9 +405,9 @@ export default function PlayerSetupScreen({
             <button
               type="button"
               onClick={handleSubmit}
-              className="px-5 sm:px-7 h-9 sm:h-10 rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95 shadow-md shadow-blue-600/30"
+              className="px-3.5 sm:px-4 h-7 sm:h-8 rounded-md bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-[10px] sm:text-[11px] uppercase tracking-wider transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95 shadow-md shadow-blue-600/30"
             >
-              <span>CONTINUE</span>
+              <span>OK</span>
               <span>↵</span>
             </button>
           </div>

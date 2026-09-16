@@ -41,11 +41,11 @@ export default function StartScreen({
       <div className="absolute inset-0 bg-black/10 pointer-events-none" />
 
       {/* ================= TOP-LEFT: NEBULOID BRANDING ================= */}
-      <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20 flex items-center gap-2.5 px-3.5 py-1.5 rounded-2xl bg-white/90 backdrop-blur-md border border-white/60 shadow-lg transition-transform hover:scale-105">
+      <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-20 flex items-center gap-2.5 px-3.5 py-1.5">
         <img
           src={logoBlackVertical}
           alt="Nebuloid"
-          className="h-10 w-auto object-contain pointer-events-none"
+          className="h-15 w-auto object-contain pointer-events-none"
         />
       </div>
 

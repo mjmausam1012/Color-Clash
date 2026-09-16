@@ -111,11 +111,11 @@ export default function LevelScreen({
         )}
 
         {/* Nebuloid Logo & Branding in Top Center */}
-        <div className="flex items-center gap-2.5 px-4 py-1.5 rounded-2xl bg-white/90 backdrop-blur-md border border-white/60 shadow-lg transition-transform hover:scale-105">
+        <div className="flex items-center gap-2.5 px-4 py-1.5">
           <img
             src={logoBlackVertical}
             alt="Nebuloid"
-            className="h-7 sm:h-8 w-auto object-contain pointer-events-none"
+            className="h-15 w-auto object-contain pointer-events-none"
           />
         </div>
 

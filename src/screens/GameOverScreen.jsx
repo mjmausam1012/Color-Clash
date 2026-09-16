@@ -303,11 +303,11 @@ export default function GameOverScreen({
 
       {/* ================= TOP BRANDING: NEBULOID LOGO AT TOP ================= */}
       <div className="relative w-full max-w-5xl flex items-center justify-center z-20 pt-1 pb-2">
-        <div className="flex items-center gap-2.5 px-4 py-1.5 rounded-2xl bg-white/90 backdrop-blur-md border border-white/60 shadow-lg transition-transform hover:scale-105">
+        <div className="flex items-center gap-2.5 px-4 py-1.5">
           <img
             src={logoBlackVertical}
             alt="Nebuloid"
-            className="h-7 sm:h-8 w-auto object-contain pointer-events-none"
+            className="h-15 w-auto object-contain pointer-events-none"
           />
         </div>
       </div>
